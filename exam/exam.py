@@ -61,16 +61,16 @@ def print_total_people(list):
 
 class My_Github(Github):
     def get_user(self, login=None):
+        num_attempts = 3
         if login is None:
             login = raw_input("Enter Github username: ")
-        while 0 == 0:
+        for i in xrange(num_attempts):
             try:
                 return Github.get_user(self, login)
             except (GithubException):
-                if raw_input ("User not found. Continue? (y|n): ") == "n":
-                    exit(0)
-                else:
-                    login = raw_input("Enter Github username: ")
+                login = raw_input("User not found, try again (attempt " + str(i+1) + " of " + str(num_attempts) + "):")
+        print ("Thanks for using this application. Bye!")
+        exit(0)
 
 g = My_Github()
 user = g.get_user()
