@@ -7,7 +7,7 @@ from github import GithubException
 
 def get_commits_number(user):
     commits_number = 0
-    for repo in g.get_user(user).get_repos():
+    for repo in user.get_repos():
         if repo.size != 0:
             commits_number += sum(1 for e in repo.get_commits())
     return commits_number
@@ -19,7 +19,7 @@ def get_commits_number(user):
 
 def repos_sum_volume(user):
     sum_repository = 0
-    for repo in g.get_user(user).get_repos():
+    for repo in user.get_repos():
         sum_repository += repo.size
     return sum_repository
 
@@ -29,7 +29,7 @@ def repos_sum_volume(user):
 
 def get_folder_login_list(user):
     list = []
-    for repo in g.get_user(user).get_repos():
+    for repo in user.get_repos():
         temp = {}        
         try:
             for commit in repo.get_commits():
@@ -74,6 +74,6 @@ class My_Github(Github):
 
 g = My_Github()
 user = g.get_user()
-print user._login, "wrote (sloc):", repos_sum_volume(user._login)
-print user._login, "comitted times:", get_commits_number(user._login)
-print_total_people(get_folder_login_list(user._login))
+print user._login, "wrote (sloc):", repos_sum_volume(user)
+print user._login, "comitted times:", get_commits_number(user)
+print_total_people(get_folder_login_list(user))
