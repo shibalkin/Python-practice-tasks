@@ -60,17 +60,30 @@ def print_total_people(list):
 #   * E. Shibalkin <shibalkin@rambler.ru>
 
 class My_Github(Github):
+# Authors:#   * E. Shibalkin <shibalkin@rambler.ru>
     def get_user(self, login=None):
         if login is None:
             login = raw_input("Enter Github username: ")
-        while 0 == 0:
+        while 1:
             try:
                 return Github.get_user(self, login)
             except (GithubException):
-                if raw_input ("User not found. Continue? (y|n): ") == "n":
+                print ("User not found")
+                if ask_ok("Try again?") == 0:
+                    print ("Thanks for using this application. Bye!")
                     exit(0)
                 else:
                     login = raw_input("Enter Github username: ")
+
+def ask_ok(prompt, retries=4, complaint='Yes or No'):
+    while 1:
+        ok = raw_input(prompt)
+        if ok in ("Y", "Yes"): return 1
+        if ok in ("N", "No", "Not"): return 0
+        retries = retries - 1
+        if retries < 0:
+            raise IOError("Пользователь не отвечает!")
+    print complaint
 
 g = My_Github()
 user = g.get_user()
