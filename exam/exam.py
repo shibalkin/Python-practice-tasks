@@ -48,32 +48,34 @@ def print_total_people(list):
             print "login: ", login
         print "total:", len(x)
 
-#g = Github()
-#user = "alsmirn"
-#print user, "wrote (sloc):", repos_sum_volume(user)
-#print user, "comitted times:", get_commits_number(user)
-#print_total_people(get_folder_login_list(user))
-
-
-
 # Author:
 #   * E. Shibalkin <shibalkin@rambler.ru>
 
 class My_Github(Github):
-    def get_user(self, login=None):
-        if login is None:
-            login = raw_input("Enter Github username: ")
-        while 0 == 0:
+    def get_user(self, login=raw_input("Enter Github username: ")):
+        while 1:
             try:
                 return Github.get_user(self, login)
             except (GithubException):
-                if raw_input ("User not found. Continue? (y|n): ") == "n":
-                    exit(0)
-                else:
+                print ("User not found")
+                if ask_ok("Try again?") == 1:
                     login = raw_input("Enter Github username: ")
+                else:
+                    print ("Thanks for using this application. Bye!")
+                    exit(0)
+
+# example from lecture 1, modified by E. Shibalkin <shibalkin@rambler.ru>
+
+def ask_ok(prompt, retries=4, complaint='Enter Yes or No'):
+    for i in xrange(retries + 1):
+        ok = raw_input(prompt + " " + complaint)
+        if ok in ("Y", "Yes", "y"): return 1
+        if ok in ("N", "No", "Not", "n"): return 0
+        if i == retries:
+            raise IOError("User doesn't respond!")
 
 g = My_Github()
-user = g.get_user()
-print user._login, "wrote (sloc):", repos_sum_volume(user._login)
-print user._login, "comitted times:", get_commits_number(user._login)
-print_total_people(get_folder_login_list(user._login))
+user = "alsmirn"
+print user, "wrote (sloc):", repos_sum_volume(user)
+print user, "comitted times:", get_commits_number(user)
+print_total_people(get_folder_login_list(user))
