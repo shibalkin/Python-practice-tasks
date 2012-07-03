@@ -55,24 +55,22 @@ def print_total_people(list):
 #print_total_people(get_folder_login_list(user))
 
 
-
 # Author:
 #   * E. Shibalkin <shibalkin@rambler.ru>
 
 class My_Github(Github):
     def get_user(self, login=raw_input("Enter Github username: ")):
-        while 1:
-            try:
-                return Github.get_user(self, login)
-            except (GithubException):
-                print ("User not found")
-                if ask_ok("Try again") == 1:
-                    login = raw_input("Enter Github username: ")
-                else:
-                    print ("Thanks for using this application. Bye!")
-                    exit(0)
+        try:
+            return Github.get_user(self, login)
+        except (GithubException):
+            print ("User not found")
+            if ask_ok("Try again"):
+                self.get_user()
+            else:
+                print ("Thanks for using this application. Bye!")
+                exit(0)
 
-def ask_ok(prompt, retries=3, complaint='[Y/n]? '):
+def ask_ok(prompt, retries=3, complaint='[y/n]? '):
 # example from lecture 1, modified by E. Shibalkin <shibalkin@rambler.ru>
     for i in xrange(retries):
         ok = raw_input(prompt + " " + complaint)
